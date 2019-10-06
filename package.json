@@ -1,0 +1,20 @@
+{
+  "name": "ibmcloud-appid-sidecar",
+  "repository": "https://github.com/cokeSchlumpf/ibmcloud-appid-sidecar",
+  "version": "1.0.0",
+  "description": "A simple sidecar proxy which handles authentication with IBM Cloud App ID",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-session": "^1.3.3",
+    "express": "^4.17.1",
+    "http-proxy-stream": "^1.3.4",
+    "ibmcloud-appid": "^6.0.0"
+  }
+}
