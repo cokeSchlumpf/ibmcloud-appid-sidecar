@@ -15,6 +15,7 @@ const APPID_CLIENTID = process.env.SIDECAR_APPID_CLIENTID || '{clientId}';
 const APPID_SECRET = process.env.SIDECAR_APPID_SECRET || '{secret}';
 const APPID_OAUTH_SERVERURL = process.env.SIDECAR_APPID_OAUTH_SERVERURL || '{oauthServerUrl}';
 const APPID_APP_URL = process.env.SIDECAR_APP_URL || ('http://localhost:' + PORT);
+const REDIRECT_URL = process.env.SIDECAR_REDIRECT_URL || APPID_APP_URL;
 
 /*
  * Configure express
@@ -52,6 +53,9 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 app.get(CALLBACK_URL, passport.authenticate(WebAppStrategy.STRATEGY_NAME));
+app.get(CALLBACK_URL, function(req, res) {
+    res.redirect(REDIRECT_URL);
+});
 
 /*
  * Routes of application
