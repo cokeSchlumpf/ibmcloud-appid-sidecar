@@ -53,19 +53,22 @@ passport.deserializeUser(function(obj, cb) {
 });
 
 app.get(CALLBACK_URL, passport.authenticate(WebAppStrategy.STRATEGY_NAME));
+/*
 app.get(CALLBACK_URL, function(req, res) {
     res.redirect(REDIRECT_URL);
 });
+*/
 
 /*
  * Routes of application
  */
-app.get('/_userinfo', function (req, res) {
+app.get('/_userinfo', passport.authenticate(WebAppStrategy.STRATEGY_NAME), function (req, res) {
     res.json(req.user);
 });
 
-app.use(passport.authenticate(WebAppStrategy.STRATEGY_NAME), function (req, res) {
-    proxy(req, { url: `${PROXY_URL}${req.originalUrl}` }, res);
+app.use(function (req, res) {
+    // proxy(req, { url: `${PROXY_URL}${req.originalUrl}` }, res);
+    res.json({ "oko": "ok" });
 });
 
 /*

@@ -1,8 +1,8 @@
 FROM node:10
 
 WORKDIR /usr/src/app
-COPY package*.json index.js ./
+COPY package*.json ./
 RUN npm install
 
-EXPOSE 3030
+COPY index.js ./
 CMD [ "node", "index.js" ]
