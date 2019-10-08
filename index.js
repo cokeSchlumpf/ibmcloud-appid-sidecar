@@ -65,7 +65,7 @@ app.get('/_userinfo', passport.authenticate(WebAppStrategy.STRATEGY_NAME), funct
     res.json(req.user);
 });
 
-app.use(function (req, res) {
+app.use(passport.authenticate(WebAppStrategy.STRATEGY_NAME), function (req, res) {
     proxy(req, { url: `${PROXY_URL}${req.originalUrl}` }, res);
 });
 
