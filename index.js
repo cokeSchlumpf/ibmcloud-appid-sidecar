@@ -1,6 +1,6 @@
 const parser = require('body-parser');
 const express = require('express');
-const session = require('cookie-session');
+const session = require('express-session');
 const proxy = require('http-proxy-stream');
 const WebAppStrategy = require("ibmcloud-appid").WebAppStrategy;
 const passport = require('passport');
@@ -23,7 +23,6 @@ const REDIRECT_URL = process.env.SIDECAR_REDIRECT_URL || APPID_APP_URL;
 const app = express();
 
 app.set('trust proxy', 1);
-app.use(parser.urlencoded({ extended: true }));
 
 /*
  * Passsport configuration for IBM Cloud App Id
@@ -33,6 +32,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -52,12 +52,11 @@ passport.deserializeUser(function(obj, cb) {
     cb(null, obj);
 });
 
+app.use(function(req, res, next) {
+    next();
+})
+
 app.get(CALLBACK_URL, passport.authenticate(WebAppStrategy.STRATEGY_NAME));
-/*
-app.get(CALLBACK_URL, function(req, res) {
-    res.redirect(REDIRECT_URL);
-});
-*/
 
 /*
  * Routes of application
@@ -67,8 +66,12 @@ app.get('/_userinfo', passport.authenticate(WebAppStrategy.STRATEGY_NAME), funct
 });
 
 app.use(function (req, res) {
-    // proxy(req, { url: `${PROXY_URL}${req.originalUrl}` }, res);
-    res.json({ "oko": "ok" });
+    proxy(req, { url: `${PROXY_URL}${req.originalUrl}` }, res);
+});
+
+app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    next(err);
 });
 
 /*

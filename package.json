@@ -12,8 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "cookie-session": "^1.3.3",
     "express": "^4.17.1",
+    "express-session": "^1.16.2",
     "http-proxy-stream": "^1.3.4",
     "ibmcloud-appid": "^6.0.0",
     "passport": "^0.4.0"
